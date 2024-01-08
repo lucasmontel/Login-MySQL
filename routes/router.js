@@ -1,31 +1,8 @@
 //Dependencias
 const express = require("express");
 const router = express.Router();
-const { Sequelize } = require("sequelize");
-const sequelize = new Sequelize("usuarios", "root", "", {
-    host: "localhost",
-    dialect: "mysql"
-})
+const User = require("../Users");
 
-  
-
-sequelize.authenticate().then(() => {
-    console.log("Conectado ao MySQL!");
-}).catch((err) => {
-    console.log("Não conectado ao MySQL:", err);
-});
-
-
-const User = sequelize.define("usuario", {
-    email: {
-        type: Sequelize.STRING,
-        require: true
-    },
-    password: {
-        type: Sequelize.TEXT,
-        require: true
-    }
-});
 
 
 router.get("/", (req, res) => {

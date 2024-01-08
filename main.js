@@ -5,7 +5,22 @@ const routes = require("./routes/router");
 const bodyParser = require("body-parser");
 
 
+const { Sequelize } = require("sequelize");
+const sequelize = new Sequelize("usuarios", "root", "", {
+    host: "localhost",
+    dialect: "mysql"
+})
 
+
+
+sequelize.authenticate().then(() => {
+    console.log("Conectado ao MySQL!");
+}).catch((err) => {
+    console.log("Não conectado ao MySQL:", err);
+});
+
+
+module.exports = sequelize;
 
 //Body Parser
 //Dizemos que o Body Parser pode receber qualquer tipo de dados, não só dados específicos
