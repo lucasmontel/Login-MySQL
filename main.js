@@ -3,29 +3,38 @@ const app = express();
 const path = require("path");
 const routes = require("./routes/router");
 const bodyParser = require("body-parser");
-
-
 const { Sequelize } = require("sequelize");
-const sequelize = new Sequelize("usuarios", "root", "", {
+
+//Configurando Sequelize para se conectar com MySQL
+const db = new Sequelize("loginmysql", "root", "jesus1981", {
     host: "localhost",
     dialect: "mysql"
 })
 
-
-
-sequelize.authenticate().then(() => {
+//Tentando conexão
+db.authenticate().then(() => {
     console.log("Conectado ao MySQL!");
 }).catch((err) => {
     console.log("Não conectado ao MySQL:", err);
 });
 
-
-module.exports = sequelize;
+//Modelo de tabela
+const User = db.define("user", {
+    email: {
+        type: Sequelize.STRING,
+        required: true
+    },
+    password: {
+        type: Sequelize.TEXT,
+        required: true
+    }
+});
+module.exports = User;
 
 //Body Parser
 //Dizemos que o Body Parser pode receber qualquer tipo de dados, não só dados específicos
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(bodyParser.json());
 //Definindo Rotas
 app.use("/login", routes);
 
